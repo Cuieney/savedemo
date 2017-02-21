@@ -391,8 +391,8 @@ public class MediaNotificationManager extends BroadcastReceiver {
 
         remoteViews = new RemoteViews(mService.getPackageName(), R.layout.notification);
         String text = TextUtils.isEmpty(albumName) ? artistName : artistName + " - " + albumName;
-        remoteViews.setCharSequence(R.id.title, "setText",albumName);
-        remoteViews.setCharSequence(R.id.text,"setText", text);
+        remoteViews.setTextViewText(R.id.title, albumName);
+        remoteViews.setTextViewText(R.id.text, text);
 
         //此处action不能是一样的 如果一样的 接受的flag参数只是第一个设置的值
         remoteViews.setImageViewResource(R.id.iv_pause, isPlaying ? R.drawable.note_btn_pause : R.drawable.note_btn_play);
@@ -429,7 +429,10 @@ public class MediaNotificationManager extends BroadcastReceiver {
 //            }
 //        }
 
-        remoteViews.setImageViewBitmap(R.id.image, BitmapHelper.scaleBitmap(mMetadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART),100,100));
+        Bitmap bitmap = mMetadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART);
+        if (bitmap != null) {
+            remoteViews.setImageViewBitmap(R.id.image, BitmapHelper.scaleBitmap(bitmap,100,100));
+        }
         if(mNotification == null){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(mService).setContent(remoteViews)
                     .setSmallIcon(R.drawable.ic_notification)

@@ -236,7 +236,7 @@ public class OrmHelper {
 //        if (songDao != null) {
 //            songDao = null;
 //        }
-//
+//        mInstance = null;
 //        contextWeakReference = null;
     }
 

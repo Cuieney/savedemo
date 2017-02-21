@@ -226,6 +226,7 @@ class HttpProxy implements ApiInterface {
                             JSONObject jo = new JSONObject(response.getMessage());
                             JSONObject membership = jo.getJSONObject("membership");
                             String level = membership.getString("level");
+                            Logger.e("LEVEL"+level);
                             SharedPreferencesHelper.getInstance(contextWeakReference.get())
                                     .putStringValue(SharedPreferencesHelper.USER_LEVEL,level);
                         } catch (JSONException e) {

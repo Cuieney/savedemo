@@ -23,13 +23,18 @@
         android:id="@+id/toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOff="横向排列"
-        android:textOn="纵向排列"
+        android:textOff="手动"
+        android:textOn="自动"
         android:checked="false" />
 
     <Button
         android:id="@+id/add"
         android:text="120"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

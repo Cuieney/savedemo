@@ -22,7 +22,7 @@
                 android:layout_width="@dimen/fw_icon_width"
                 android:layout_height="@dimen/fw_icon_height"
                 android:layout_centerVertical="true"
-                android:src="@drawable/lock_btn" />
+                android:src="@drawable/unlock_btn" />
 
             <ImageView
                 android:id="@+id/stop"

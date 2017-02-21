@@ -3,6 +3,7 @@ package com.feetsdk.android.feetsdk.ui;
 import android.content.Context;
 
 import com.feetsdk.android.common.rom.FloatPermission;
+import com.feetsdk.android.common.utils.Logger;
 
 /**
  * Created by cuieney on 17/1/11.
@@ -27,6 +28,7 @@ public class FwController {
     private synchronized void checkProxyIsNull(Context context) {
         if (fwProxy == null) {
             fwProxy = new FWProxy(context, location);
+            Logger.e("new fw_proxy");
         }
     }
 
@@ -49,6 +51,7 @@ public class FwController {
 
     public void remove() {
         fwProxy.remove();
+        fwProxy = null;
         controller = null;
     }
 

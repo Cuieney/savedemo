@@ -10,6 +10,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 
 import com.feetsdk.android.R;
+import com.feetsdk.android.common.utils.Logger;
 import com.feetsdk.android.feetsdk.player.JniBridge;
 
 import java.io.File;
@@ -239,7 +240,12 @@ public class FeetPlayer implements ISuperPowerPlayer {
                 public void run() {
                     while (volA != 100 && !remixSuccess) {
                         SystemClock.sleep(600);
-                        jniBridge.onCrossfader(volA += 10);
+                        try {
+                            jniBridge.onCrossfader(volA += 10);
+                        }catch (NullPointerException e){
+                            Logger.e("remix null");
+                        }
+
                     }
 
                     volB = 100;
@@ -253,7 +259,12 @@ public class FeetPlayer implements ISuperPowerPlayer {
                 public void run() {
                     while (volB != 0 && !remixSuccess) {
                         SystemClock.sleep(600);
-                        jniBridge.onCrossfader(volB -= 10);
+                        try{
+                            jniBridge.onCrossfader(volB -= 10);
+                        }catch (NullPointerException e){
+                            Logger.e("remix null");
+                        }
+
                     }
                     remixSuccess = true;
                     volA = 0;

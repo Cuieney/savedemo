@@ -18,11 +18,16 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.KeyEvent;
 
+import com.feetsdk.android.common.utils.AppManager;
 import com.feetsdk.android.common.utils.Logger;
+import com.feetsdk.android.common.utils.SystemInfoUtil;
 import com.feetsdk.android.feetsdk.Music;
 import com.feetsdk.android.feetsdk.db.OrmHelper;
 import com.feetsdk.android.feetsdk.stepcount.IStepChange;
 import com.feetsdk.android.feetsdk.stepcount.StepDetector;
+import com.feetsdk.android.feetsdk.ui.ChooseSingerActivity;
+import com.feetsdk.android.feetsdk.ui.ConfigActivity;
+import com.feetsdk.android.feetsdk.ui.SearchSingerActivity;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -72,6 +77,7 @@ public class MusicService extends MediaBrowserServiceCompat implements PlaybackM
     @Override
     public void onCreate() {
         super.onCreate();
+        Logger.e("server create");
 //        if (myBinder == null) {
 //            myBinder = new MyBinder();
 //        }
@@ -150,6 +156,19 @@ public class MusicService extends MediaBrowserServiceCompat implements PlaybackM
         });
     }
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Logger.e("level:"+level);
+        SystemInfoUtil.getEveryAppMemory(this);
+//        AppManager.getAppManager().finishAllActivity();
+//        OrmHelper.getInstance(this).closeDb();
+        SystemInfoUtil.clearAppCache(this);
+        SystemInfoUtil.clearMemory(this);
+        if (level == TRIM_MEMORY_BACKGROUND) {
+
+        }
+    }
 
     private void initMediaSession() {
         mSessionCompat = new MediaSessionCompat(this, "MusicService");
@@ -271,7 +290,8 @@ public class MusicService extends MediaBrowserServiceCompat implements PlaybackM
                 sessionCallback.onSkipToPrevious();
                 break;
             case MusicProxy.ACTION_STOP_MUSIC:
-                sessionCallback.onStop();
+//                sessionCallback.onStop();
+                stopSelf();
                 break;
 
             case MusicProxy.ACTION_SET_TEMPO:
@@ -293,6 +313,7 @@ public class MusicService extends MediaBrowserServiceCompat implements PlaybackM
 
     @Override
     public int onStartCommand(Intent startIntent, int flags, int startId) {
+        Logger.e("server startcommand");
         if (!isConnected) {
 //            this.bindService(new Intent(this, PlayNannyService.class), myServiceConnection, Context.BIND_IMPORTANT);
         }
@@ -321,6 +342,7 @@ public class MusicService extends MediaBrowserServiceCompat implements PlaybackM
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Logger.e("server destroy");
         // Service is being killed, so make sure we release our resources
         playbackManager.handleStopRequest(null);
         mMediaNotificationManager.stopNotification();
@@ -332,6 +354,7 @@ public class MusicService extends MediaBrowserServiceCompat implements PlaybackM
         mSessionCompat.release();
         sensormanager = null;
         if (stepDetector != null) {
+            stepDetector.registerStepListener(null);
             stepDetector.unregisterStepListener();
             stepDetector = null;
             sensormanager = null;

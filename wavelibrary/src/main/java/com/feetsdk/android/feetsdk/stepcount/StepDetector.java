@@ -46,7 +46,7 @@ public class StepDetector implements SensorEventListener {
     }
 
 
-    public void registerStepListener(@NonNull IStepChange change) {
+    public void registerStepListener(IStepChange change) {
         this.change = change;
         mSensorMgr.registerListener(this, mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
         interval = mGeneratorExecutor.scheduleWithFixedDelay(new CalSensorData(),1,1, TimeUnit.SECONDS);

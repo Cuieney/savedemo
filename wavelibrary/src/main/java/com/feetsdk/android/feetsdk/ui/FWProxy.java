@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.feetsdk.android.FeetSdk;
 import com.feetsdk.android.R;
 import com.feetsdk.android.common.utils.Logger;
+import com.feetsdk.android.common.utils.ToastUtil;
 import com.feetsdk.android.feetsdk.Music;
 import com.feetsdk.android.feetsdk.annotation.EventType;
 import com.feetsdk.android.feetsdk.download.DownloadControler;
@@ -319,7 +320,7 @@ public class FWProxy implements View.OnClickListener {
 
         if (i == R.id.menu) {
             mFloatWindow.dismiss();
-            Intent intent = new Intent(context, ConfigActivity.class);
+            Intent intent = new Intent(context.getApplicationContext(), ConfigActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
@@ -332,6 +333,8 @@ public class FWProxy implements View.OnClickListener {
     public void playMusic() {
         if (totalMin > 0) {
             showPlayer();
+        }else{
+            ToastUtil.showToast(context,"请至少下载一首歌");
         }
     }
 
@@ -452,9 +455,8 @@ public class FWProxy implements View.OnClickListener {
         if (mediaSessionControls != null &&
                 (mediaSessionControls.getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING)) {
             mMusicCtl.onPause();
+            mMusicCtl.onStop();
         }
-
-        mMusicCtl.onStop();
     }
 
     private View findViewById(View view, int id) {
@@ -531,7 +533,7 @@ public class FWProxy implements View.OnClickListener {
 
     private void updateLockedState() {
         if (isLocked) {
-            mPlayerLock.setImageResource(R.drawable.unlock_btn);
+            mPlayerLock.setImageResource(R.drawable.lock_btn);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 turnOnAnimator(lockContainer);
             } else {
@@ -540,7 +542,7 @@ public class FWProxy implements View.OnClickListener {
 
             }
         } else {
-            mPlayerLock.setImageResource(R.drawable.lock_btn);
+            mPlayerLock.setImageResource(R.drawable.unlock_btn);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 turnOffAnimator(lockContainer);
             } else {

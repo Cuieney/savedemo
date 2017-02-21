@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.feetsdk.android.feetsdk.ui.ChooseSingerActivity;
+import com.feetsdk.android.feetsdk.ui.ConfigActivity;
+import com.feetsdk.android.feetsdk.ui.SearchSingerActivity;
+
 import java.util.ConcurrentModificationException;
 import java.util.Stack;
 
@@ -101,8 +105,9 @@ public class AppManager {
      */
     public void finishAllActivity() {
         for (int i = 0; i < activityStack.size(); i++) {
-            if (null != activityStack.get(i)) {
-                activityStack.get(i).finish();
+            Activity activity = activityStack.get(i);
+            if (null != activity) {
+                activity.finish();
             }
         }
         activityStack.clear();

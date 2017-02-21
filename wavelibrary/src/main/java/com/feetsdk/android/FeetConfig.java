@@ -7,10 +7,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.feetsdk.android.common.exception.HttpException;
 import com.feetsdk.android.common.utils.LocalPathResolver;
 import com.feetsdk.android.common.utils.Logger;
 import com.feetsdk.android.common.utils.ManifestUtil;
 import com.feetsdk.android.common.utils.SharedPreferencesHelper;
+import com.feetsdk.android.feetsdk.http.HttpControler;
+import com.feetsdk.android.feetsdk.http.HttpResponse;
+import com.feetsdk.android.feetsdk.http.IHttpRspCallBack;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.util.FileDownloadHelper;
 
@@ -134,6 +138,21 @@ public class FeetConfig implements IFeetConfig {
 
     @Override
     public boolean checkSelf(String appKey, String appChannel) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new HttpControler(context).getUserInfo(new IHttpRspCallBack() {
+                    @Override
+                    public void success(HttpResponse response) {
+                    }
+
+                    @Override
+                    public void failed(HttpException exception) {
+                    }
+                });
+            }
+        }).start();
+
         if (TextUtils.isEmpty(appKey)) {
             return false;
         }

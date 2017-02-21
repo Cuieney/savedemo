@@ -11,7 +11,10 @@ import android.widget.Toast;
 import com.feetsdk.android.FeetSdk;
 import com.feetsdk.android.R;
 import com.feetsdk.android.common.utils.AppManager;
+import com.feetsdk.android.common.utils.SharedPreferencesHelper;
 import com.zhy.autolayout.AutoLayoutActivity;
+
+import static com.feetsdk.android.common.utils.SharedPreferencesHelper.MUSIC_NUMBER;
 
 public class ConfigActivity extends AutoLayoutActivity implements View.OnClickListener {
 
@@ -25,6 +28,7 @@ public class ConfigActivity extends AutoLayoutActivity implements View.OnClickLi
     private View oneHundredIcon;
     private View twoHundredIcon;
     private View changeSinger;
+    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,9 @@ public class ConfigActivity extends AutoLayoutActivity implements View.OnClickLi
         }
         setContentView(R.layout.activity_config);
         AppManager.getAppManager().addActivity(this);
+
+        size = SharedPreferencesHelper.getInstance(this).getIntValue(MUSIC_NUMBER);
+
         initView();
         initListener();
     }
@@ -46,6 +53,24 @@ public class ConfigActivity extends AutoLayoutActivity implements View.OnClickLi
         oneHundred.setOnClickListener(this);
         twoHundred.setOnClickListener(this);
         changeSinger.setOnClickListener(this);
+
+        if (size == 10) {
+            resetMinute(30);
+        }else if(size == 20){
+            resetMinute(60);
+        }else if(size == 30){
+            resetMinute(120);
+        }else if(size == 40){
+            resetMinute(240);
+        }
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (level == TRIM_MEMORY_MODERATE) {
+            System.gc();
+        }
     }
 
     private void initView() {

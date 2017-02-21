@@ -165,18 +165,22 @@ public class MusicController implements PlaybackManager.MyMediaSession {
     }
 
     public void unregisterMusicChangeListener() {
+        registerStepChange(null);
         onMusicChangeListener = null;
     }
 
     public void unregisterMusicUpdatedListener() {
+        registerMeidaUpdatedListener(null);
         onMediaStateUpdatedListener = null;
     }
 
     public void unregisterMediaControllerListener() {
+        registerMediaControllerChangeListener(null);
         onMediaControllerListener = null;
     }
 
     public void unregisterStepChange() {
+        registerStepChange(null);
         stepChange = null;
     }
 

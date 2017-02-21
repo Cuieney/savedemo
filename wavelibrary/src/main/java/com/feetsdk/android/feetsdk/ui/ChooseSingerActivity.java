@@ -20,6 +20,8 @@ import com.feetsdk.android.R;
 import com.feetsdk.android.common.exception.HttpException;
 import com.feetsdk.android.common.utils.AppManager;
 import com.feetsdk.android.common.utils.ImageLoader;
+import com.feetsdk.android.common.utils.Logger;
+import com.feetsdk.android.common.utils.SharedPreferencesHelper;
 import com.feetsdk.android.common.utils.ToastUtil;
 import com.feetsdk.android.feetsdk.entity.response.RspSinger;
 import com.feetsdk.android.feetsdk.http.HttpControler;
@@ -40,6 +42,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.feetsdk.android.common.utils.SharedPreferencesHelper.MUSIC_NUMBER;
 
 public class ChooseSingerActivity extends AutoLayoutActivity implements BaseAdapter.OnItemClickListener, View.OnClickListener {
 
@@ -77,6 +81,8 @@ public class ChooseSingerActivity extends AutoLayoutActivity implements BaseAdap
         chooseSingerList.put(2, null);
         chooseSingerList.put(3, null);
         httpControler = new HttpControler(this);
+
+
         initView();
         loadData();
     }
@@ -358,6 +364,7 @@ public class ChooseSingerActivity extends AutoLayoutActivity implements BaseAdap
                     chooseSingerList.get(3).getId(), new IHttpRspCallBack() {
                         @Override
                         public void success(HttpResponse response) {
+                            Logger.e(response.getMessage()+" post singer");
                             new MusicHelper(ChooseSingerActivity.this).clearFeetSdk();
                             finish();
                         }
@@ -381,5 +388,13 @@ public class ChooseSingerActivity extends AutoLayoutActivity implements BaseAdap
             judgeArtist(artist);
         }
 
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (level == TRIM_MEMORY_MODERATE) {
+            System.gc();
+        }
     }
 }

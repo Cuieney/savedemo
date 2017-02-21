@@ -233,4 +233,12 @@ public class SearchSingerActivity extends AutoLayoutActivity implements BaseAdap
         this.setResult(RESULT_OK, intent);
         this.finish();
     }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (level == TRIM_MEMORY_MODERATE) {
+            System.gc();
+        }
+    }
 }

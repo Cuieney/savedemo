@@ -76,11 +76,9 @@ FeetPower::~FeetPower() {
 void FeetPower::onPlayPause(bool play) {
     pthread_mutex_lock(&mutex);
     if (!play) {
-     bool masterIsA = (crossValue <= 0.5f);
         playerA->pause(false);
         playerB->pause(false);
     } else {
-        bool masterIsA = (crossValue <= 0.5f);
         playerA->play(true);
         playerB->play(true);
     };
