@@ -46,16 +46,17 @@ import com.zhy.autolayout.utils.AutoUtils;
 
 /**
  * Created by cuieney on 17/1/10.
+ *
  */
 public class FWProxy implements View.OnClickListener {
     private FloatWindow mFloatWindow;
-    public MediaControllerCompat mediaSessionControls;
+    private MediaControllerCompat mediaSessionControls;
     private MusicController mMusicCtl;
     private DownloadControler mDownloadCtl;
     private Context context;
     private View mMenuLayout;
     private View mPlayerLayout;
-    public CircularMusicProgressBar mCircularProgress;
+    private CircularMusicProgressBar mCircularProgress;
     private ImageView mDownloadSetting;
     private ImageView mDownLoadPlay;
     private ImageView mDownloadClose;
@@ -87,6 +88,8 @@ public class FWProxy implements View.OnClickListener {
 
     private boolean isPlaying;
     private boolean tempoAuto = true;
+    // 正在切歌
+    private boolean isNextMsc;
 
     public static final String UPDATE_DB = "UPDATE_DB";
     public static final String ACTION_OUTSIDE = "ACTION_OUTSIDE";
@@ -101,6 +104,7 @@ public class FWProxy implements View.OnClickListener {
                 mPlayerNext.setVisibility(View.VISIBLE);
                 mPlayerName.setVisibility(View.GONE);
                 mPlayerPause.setVisibility(View.VISIBLE);
+                isNextMsc = false;
             } else if (msg.what == 3) {
                 mPlayerBpm.setText(((String) msg.obj));
             }
@@ -196,6 +200,7 @@ public class FWProxy implements View.OnClickListener {
                     updateNextState();
                 }
 
+
             }
         });
 
@@ -279,6 +284,7 @@ public class FWProxy implements View.OnClickListener {
         int i = v.getId();
         if (i == R.id.download_play) {
             playMusic();
+
         }
 
         if (i == R.id.pause) {
@@ -333,8 +339,11 @@ public class FWProxy implements View.OnClickListener {
     public void playMusic() {
         if (totalMin > 0) {
             showPlayer();
+
+
+
         }else{
-            ToastUtil.showToast(context,"请至少下载一首歌");
+            ToastUtil.showToast(context,"请至少下载一首歌曲");
         }
     }
 
@@ -354,6 +363,13 @@ public class FWProxy implements View.OnClickListener {
 
 
     private void updateNextState() {
+        if (mPlayerPlay.getVisibility() == View.VISIBLE) {
+            mPlayerPlay.setVisibility(View.GONE);
+        }
+        if (mPlayerStop.getVisibility() == View.VISIBLE) {
+            mPlayerStop.setVisibility(View.GONE);
+            mPlayerLock.setVisibility(View.VISIBLE);
+        }
         mPlayerNext.setVisibility(View.GONE);
         mPlayerName.setVisibility(View.VISIBLE);
         mPlayerPause.setVisibility(View.GONE);
@@ -388,7 +404,6 @@ public class FWProxy implements View.OnClickListener {
     }
 
     private void updatePauseState() {
-
         mPlayerStop.setVisibility(View.VISIBLE);
         mPlayerLock.setVisibility(View.GONE);
         mPlayerNext.setVisibility(View.GONE);
@@ -398,13 +413,15 @@ public class FWProxy implements View.OnClickListener {
     }
 
     private void updatePlayState() {
+        if (!isNextMsc) {
+            mPlayerStop.setVisibility(View.GONE);
+            mPlayerLock.setVisibility(View.VISIBLE);
+            mPlayerNext.setVisibility(View.VISIBLE);
+            mPlayerPlay.setVisibility(View.GONE);
+            mPlayerName.setVisibility(View.GONE);
+            mPlayerPause.setVisibility(View.VISIBLE);
+        }
 
-        mPlayerStop.setVisibility(View.GONE);
-        mPlayerLock.setVisibility(View.VISIBLE);
-        mPlayerNext.setVisibility(View.VISIBLE);
-        mPlayerPlay.setVisibility(View.GONE);
-        mPlayerName.setVisibility(View.GONE);
-        mPlayerPause.setVisibility(View.VISIBLE);
     }
 
 
@@ -412,6 +429,8 @@ public class FWProxy implements View.OnClickListener {
         mMusicCtl.onPlay();
         mMusicCtl.onCustomAction("updated_song", new Bundle());
         flipCard();
+        isNextMsc = true;
+        updateNextState();
 
 //        mCircularProgress.setImageResource(R.drawable.play_animation);
 //        AnimationDrawable animationDrawable = (AnimationDrawable) mCircularProgress.getDrawable();
@@ -426,6 +445,8 @@ public class FWProxy implements View.OnClickListener {
     }
 
     public void showDownload() {
+        mFloatWindow.turnMini();
+
         flipCard();
         if (mediaSessionControls != null &&
                 (mediaSessionControls.getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING)) {
@@ -512,20 +533,23 @@ public class FWProxy implements View.OnClickListener {
     }
 
     // 翻转卡片
-    public void flipCard() {
+    private void flipCard() {
         // 正面朝上
         if (!mIsShowBack) {
-            mRightOutSet.setTarget(downloadContainer);
-            mLeftInSet.setTarget(playerContainer);
-            mRightOutSet.start();
-            mLeftInSet.start();
+//            mRightOutSet.setTarget(downloadContainer);
+//            mLeftInSet.setTarget(playerContainer);
+//            mRightOutSet.start();
+//            mLeftInSet.start();
+            downloadContainer.setVisibility(View.GONE);
+            playerContainer.setVisibility(View.VISIBLE);
             mIsShowBack = true;
-
         } else { // 背面朝上
-            mRightOutSet.setTarget(playerContainer);
-            mLeftInSet.setTarget(downloadContainer);
-            mRightOutSet.start();
-            mLeftInSet.start();
+//            mRightOutSet.setTarget(playerContainer);
+//            mLeftInSet.setTarget(downloadContainer);
+//            mRightOutSet.start();
+//            mLeftInSet.start();
+            downloadContainer.setVisibility(View.VISIBLE);
+            playerContainer.setVisibility(View.GONE);
             mIsShowBack = false;
 
         }

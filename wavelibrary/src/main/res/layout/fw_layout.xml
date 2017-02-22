@@ -70,6 +70,7 @@
                 android:visibility="gone" />
 
             <TextView
+                android:visibility="gone"
                 android:gravity="center"
                 android:id="@+id/name"
                 android:layout_width="match_parent"
@@ -79,7 +80,6 @@
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
                 android:textColor="#fff" />
 
         </com.zhy.autolayout.AutoRelativeLayout>

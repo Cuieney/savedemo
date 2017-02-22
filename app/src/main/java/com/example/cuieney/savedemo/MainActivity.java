@@ -35,44 +35,41 @@ public class MainActivity extends AppCompatActivity {
         feetUiController = FeetSdk.getFeetUiController();
         feetUiController.setLocation(600);
 
-        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                checked = isChecked;
-                textView.setText(isChecked + "");
-                feetUiController.setAutoBpm(isChecked, MainActivity.this);
-            }
+        button.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            checked = isChecked;
+            textView.setText(isChecked + "");
+            feetUiController.setAutoBpm(isChecked, MainActivity.this);
         });
         button.setChecked(true);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int bpm = Integer.parseInt(add.getText().toString());
-                if (bpm > 200) {
-                    bpm = 120;
-                } else {
-                    bpm += 5;
-                }
-                add.setText(bpm + "");
-                if (!checked) {
-                    feetUiController.setBpm(bpm);
-                }
+        add.setOnClickListener(v -> {
+            int bpm = Integer.parseInt(add.getText().toString());
+            if (bpm > 200) {
+                bpm = 120;
+            } else {
+                bpm += 5;
+            }
+            add.setText(bpm + "");
+            if (!checked) {
+                feetUiController.setBpm(bpm);
             }
         });
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                feetUiController.show(MainActivity.this);
+        add.setOnClickListener(v -> {
+            int bpm = Integer.parseInt(add.getText().toString());
+            if (bpm > 200) {
+                bpm = 120;
+            } else {
+                bpm += 5;
+            }
+            add.setText(bpm + "");
+            if (!checked) {
+                feetUiController.setBpm(bpm);
             }
         });
 
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                feetUiController.remove();
-            }
-        });
+        textView.setOnClickListener(v -> feetUiController.show(MainActivity.this));
+
+        close.setOnClickListener(v -> feetUiController.remove());
         close.setVisibility(View.GONE);
 
     }

@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/complete_txt"
+            android:text="@string/back_txt"
             android:textColor="@color/color_reset_singer_normal" />
     </LinearLayout>
 
