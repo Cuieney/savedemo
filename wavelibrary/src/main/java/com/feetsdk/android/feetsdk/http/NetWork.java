@@ -203,8 +203,6 @@ public class NetWork {
         };
 
 
-
-
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor.ADD_HEAD_INTERCEPTOR)
                 .addInterceptor(interceptor.REWRITE_RESPONSE_INTERCEPTOR)
@@ -213,31 +211,4 @@ public class NetWork {
                 .cache(cache)
                 .build();
     }
-
-//    private SSLSocketFactory getCertificates() {
-//        try {
-//
-////            InputStream inputStream = AppConfig.getApp().getAssets().open("https.cer");
-//            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-//
-//            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-//            keyStore.load(null);
-//
-//            int index = 0;
-//            String certificateAlias = Integer.toString(index++);
-//            keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(null));
-//
-//            SSLContext tls = SSLContext.getInstance("TLS");
-//            TrustManagerFactory trustManagerFactory =
-//                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-//            trustManagerFactory.init(keyStore);
-//            tls.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
-//            return tls.getSocketFactory();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
-
 }
